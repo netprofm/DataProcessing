@@ -1,4 +1,4 @@
-/* use this to test out your function */
+/* Chris Olberts */
 window.onload = function() {
  	changeColor("no", "pink");
 	changeColor("ch", "red");
