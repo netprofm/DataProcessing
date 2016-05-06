@@ -1,0 +1,50 @@
+<!-- Chris Olberts -->
+<html>
+	<head>
+		<title>Barchart</title>
+		<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+		<style>
+			
+			.bar {
+			  fill: #006000;
+			}
+			
+			.bar:hover {
+				fill: #600000;
+			}
+		</style>
+	</head>
+	<body>
+		
+		<script>
+		
+		d3.json("KNMI999.json", function (JSONdata) {
+			
+			var width = 800,
+				height = 500,
+				barHeight = width / JSONdata.length;
+			
+			var x = d3.scale.linear()
+				.domain([0, d3.max(JSONdata, function(d) { return d.Windspeed; })])
+				.range([height, 0]);
+						
+			var canvas = d3.select("body")
+				.append("svg")
+					.attr("class", "chart")
+					.attr("width", width)
+					.attr("height", height);
+						
+			canvas.selectAll("rect")
+				.data(JSONdata)
+				.enter()
+					.append("rect")
+						.attr("class", "bar")
+						.attr("height", function(d) {d.Windspeed = +d.Windspeed; return x(d.Windspeed);})
+						.attr("width", barHeight)
+						.attr("y", function (d, i) {return i * (barHeight + 1);});
+		});
+		
+		
+		</script>
+	</body>
+</html>
