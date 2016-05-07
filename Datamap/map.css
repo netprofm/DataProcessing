@@ -1,0 +1,16 @@
+.map {
+	width: 1000;
+	height: 700;
+	position: relative;
+	margin: auto;
+}
+
+H1 {
+	text-align: center;
+	font: 24px sans-serif;
+}
+
+H2 {
+	text-align: center;
+	font: 16px sans-serif;
+}
