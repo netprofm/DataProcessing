@@ -52,7 +52,7 @@ function reloadGraph(q) {
 		
 		var speeds = ["WindHigh", "WindAvg", "WindLow"];
 		color.domain(speeds);
-			
+		
 		for (var i in speeds) {
 			var speed = speeds[i];
 			var lineData = d3.svg.line()
@@ -64,7 +64,8 @@ function reloadGraph(q) {
 								.attr("d", function(d) { return lineData(dataNest[q].values);})
 								.attr("stroke", color(speed))
 								.attr("stroke-width", 2)
-								.attr("fill", "none");
+								.attr("fill", "none")
+								.attr("data-legend", speed);
 		};
 
 		var xAxis = d3.svg.axis()
@@ -97,6 +98,13 @@ function reloadGraph(q) {
 			.attr("transform", "translate(15, " + (height / 2 + 80) + ") rotate(-90)" )
 			.append("text")
 			.text("Windspeed in M/S");
+			
+		legend = chartArea.append("g")
+			.attr("class","legend")
+			.attr("transform","translate(50,30)")
+			.style("font-size","12px")
+			.call(d3.legend)
+
 	});
 }
 reloadGraph(0);

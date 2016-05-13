@@ -4,10 +4,12 @@
 
 .x-axis text {
 	font: 12px sans-serif;
+	transform: translate(58px, 0px);
 }
 
 .y-axis text {
 	font: 12px sans-serif;
+	
 }
 
 .x-axis path,
@@ -21,4 +23,10 @@
 
 .label text {
 	font: 18px sans-serif;
+}
+
+.legend rect {
+	fill:white;
+	stroke:black;
+	opacity:0.8;
 }
