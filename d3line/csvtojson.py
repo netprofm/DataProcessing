@@ -7,10 +7,10 @@ import json
 
 # open and make the files
 csvfile = open('KNMI.csv', 'r')
-jsonfile = open('KNMI999.json', 'w')
+jsonfile = open('KNMI.json', 'w')
 
 # make titles
-fieldnames = ("Location", "Date", "Avg. Windspeed", "High Windspeed", "Low Windspeed")
+fieldnames = ("Date", "Avg. Windspeed", "High Windspeed", "Low Windspeed")
 reader = csv.DictReader(csvfile, fieldnames)
 
 # write the data in a csv file

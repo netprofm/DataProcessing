@@ -1,0 +1,24 @@
+.line {
+	fill: steelblue;
+}
+
+.x-axis text {
+	font: 12px sans-serif;
+}
+
+.y-axis text {
+	font: 12px sans-serif;
+}
+
+.x-axis path,
+.y-axis path,
+.x-axis line,
+.y-axis line {
+	fill: none;
+	stroke: #000;
+	shape-rendering: crispEdges;
+}
+
+.label text {
+	font: 18px sans-serif;
+}
