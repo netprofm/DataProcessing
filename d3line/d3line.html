@@ -7,12 +7,12 @@
 	</head>
 	<body>
 		<h1>Minimum Hourly, Maximum Hourly and Daily Average Windspeed, coastal vs. inland, 2015</h1>
+		<h3>Chris Olberts</h3>
 		<form action="">
-			<input type="radio" name="location" value="IJmuiden" checked="checked" onclick="reloadGraph(0)"> IJmuiden <br>
-			<input type="radio" name="location" value="Maastricht" onclick="reloadGraph(1)"> Maastricht
+			<input type="radio" name="location" value="IJmuiden" checked="checked" onclick=" drawGraph(0)"> IJmuiden <br>
+			<input type="radio" name="location" value="Maastricht" onclick="drawGraph(1)"> Maastricht
 		</form>
 		<script src="d3.legend.js"></script>
 		<script src="d3line.js"></script>
 	</body>
 </html>
-

@@ -1,3 +1,4 @@
+
 var margin = {top: 20, right: 60, bottom: 80, left: 60},
 	padding = {top: 5, right: 1, bottom: 0, left: 1},
 	fullWidth = 1500,
@@ -13,28 +14,24 @@ var x = d3.time.scale()
 
 var y = d3.scale.linear()
 	.range([height, 0])
-	
+var color = d3.scale.category10();
+
 d3.select("svg").remove()
+d3.select("body")
+	.append("svg")
+		.attr("class", "chartFull")
+		.attr("width", fullWidth)
+		.attr("height", fullHeight)
 
-function reloadGraph(q) {
+var chartFull = d3.select(".chartFull");
 	
-	d3.select("svg").remove()
-	d3.select("body")
-		.append("svg")
-			.attr("class", "chartFull")
-			.attr("width", fullWidth)
-			.attr("height", fullHeight)
-		.append("g")
-			.attr("class", "chartArea")
-			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-	var chartFull = d3.select(".chartFull");
-	var chartArea = d3.select(".chartArea");
-
-	var color = d3.scale.category10();
-
-	d3.json("KNMI.json", function(error, JSONdata) {
+d3.json("KNMI.json", function(error, JSONdata) {
+		
 		if (error) throw error;
+		
+		var average = [];
+		var high = [];
+		var low = [];
 		
 		JSONdata.forEach(function(d){
 			d.Dates = parse(d.Dates);
@@ -42,32 +39,10 @@ function reloadGraph(q) {
 			d.WindAvg = +d.WindAvg / 10;
 			d.WindLow = +d.WindLow / 10;
 		});
-		
+			
 		x.domain(d3.extent(JSONdata, function(d) { return d.Dates; }));
 		y.domain([0, d3.max(JSONdata, function(d) {  return d.WindHigh; })]);
-		
-		var dataNest = d3.nest()
-			.key(function(d) {return d.Location;})
-			.entries(JSONdata);
-		
-		var speeds = ["WindHigh", "WindAvg", "WindLow"];
-		color.domain(speeds);
-		
-		for (var i in speeds) {
-			var speed = speeds[i];
-			var lineData = d3.svg.line()
-						.x(function(d) { return x(d.Dates); })
-						.y(function(d) { return y(d[speed]); })
-						.interpolate("linear");
 				
-			var lineDraw = chartArea.append("path")
-								.attr("d", function(d) { return lineData(dataNest[q].values);})
-								.attr("stroke", color(speed))
-								.attr("stroke-width", 2)
-								.attr("fill", "none")
-								.attr("data-legend", speed);
-		};
-
 		var xAxis = d3.svg.axis()
 			.scale(x)
 			.orient("bottom")
@@ -91,20 +66,58 @@ function reloadGraph(q) {
 			.attr("class", "label")
 			.attr("transform", "translate(" + (width / 2) + ", " + (fullHeight) + ")")
 			.append("text")
-			.text("Date in 2016");
+			.text("Date in 2015");
 			
 		chartFull.append("g")
 			.attr("class", "label")
 			.attr("transform", "translate(15, " + (height / 2 + 80) + ") rotate(-90)" )
 			.append("text")
 			.text("Windspeed in M/S");
-			
-		legend = chartArea.append("g")
-			.attr("class","legend")
-			.attr("transform","translate(50,30)")
-			.style("font-size","12px")
-			.call(d3.legend)
+});
 
+function drawGraph(type) {
+d3.json("KNMI.json", function(error, JSONdata) {
+	JSONdata.forEach(function(d){
+		d.Dates = parse(d.Dates);
+		d.WindHigh = +d.WindHigh / 10;
+		d.WindAvg = +d.WindAvg / 10;
+		d.WindLow = +d.WindLow / 10;
 	});
+	
+	d3.select(".chartArea").remove();
+	d3.select(".chartFull")
+		.append("g")
+			.attr("class", "chartArea")
+			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+	chartArea = d3.select(".chartArea");
+
+	var dataNest = d3.nest()
+		.key(function(d) {return d.Location;})
+		.entries(JSONdata);
+	
+	var speeds = ["WindHigh", "WindAvg", "WindLow"];
+	
+	color.domain(speeds);
+	
+	for (var i in speeds) {
+			var speed = speeds[i];
+			var lineData = d3.svg.line()
+					.x(function(d) { return x(d.Dates); })
+					.y(function(d) { return y(d[speed]); })
+					.interpolate("linear");
+			chartArea.append("path")
+							.attr("d", function(d) { return lineData(dataNest[type].values);})
+							.attr("stroke", color(speed))
+							.attr("stroke-width", 2)
+							.attr("fill", "none")
+							.attr("data-legend", speed);
+	}
+	
+	 legend = chartArea.append("g")
+		.attr("class","legend")
+		.attr("transform","translate(50,30)")
+		.style("font-size","12px")
+		.call(d3.legend)
+});
 }
-reloadGraph(0);
+drawGraph(0);
