@@ -56,7 +56,9 @@ d3.json("KNMI999.json", function(JSONdata) {
 	
 	var xAxis = d3.svg.axis()
 		.scale(x)
-		.orient("bottom");
+		.orient("bottom")
+		.ticks(12)
+		.tickFormat(d3.time.format("%Y"));
 	
 	chart.append("g")
 		.attr("class", "x-axis")
